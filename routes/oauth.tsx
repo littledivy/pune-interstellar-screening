@@ -6,7 +6,7 @@ import IMAXSeats from "../islands/Seats.tsx";
 import settings from "../settings.json" assert { type: "json" };
 const { web } = settings;
 
-export async function handler(req: Request) {
+export async function handler(req: Request, ctx) {
   const url = new URL(req.url);
   const code = url.searchParams.get("code");
   if (!code) {
@@ -32,6 +32,6 @@ export async function handler(req: Request) {
   });
 }
 
-export default function Booking(props: PageProps) {
-  return <IMAXSeats />;
+export default function Booking({ data }: PageProps) {
+  return <IMAXSeats avatar_url={data.profileInfo.avatar_url} />;
 }

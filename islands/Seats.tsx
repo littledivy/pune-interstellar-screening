@@ -20,6 +20,11 @@ function generateIMAXSeats(rows: number, seatsPerRow: number) {
 
 const seats = generateIMAXSeats(14, 17 + 25 + 17);
 
+type SeatsProps = {
+  email: string;
+  avatar_url: string;
+};
+
 export default function IMAXSeats(props: SeatsProps) {
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
   const [price, setPrice] = useState<number>(0);
@@ -44,6 +49,16 @@ export default function IMAXSeats(props: SeatsProps) {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">r/Pune IMAX Seat Selection</h1>
+      <div className="float-right flex">
+        <h1 className="mb-4 text-sm p-1 pr-2">
+          Signed in as dj.srivastava23@gmail.com
+        </h1>
+        <img
+          className="rounded-full w-8 h-8 mr-2"
+          src={"https://lh3.googleusercontent.com/a/AAcHTtdhFGc4KQwsJC-8kSjnVZ0IRcHpl4uZNcckmKhAKg=s96-c"}
+        />
+      </div>
+
       <div className="container items-center">
         <div className="screen"></div>
       </div>
