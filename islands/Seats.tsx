@@ -1,5 +1,9 @@
 import { useState } from "preact/hooks";
-import { Button } from "../components/Button.tsx";
+
+const removedSeats = [
+  ..."M".repeat(5).split("").map((m, i) => `${m}${i + 1}`),
+  // TODO
+];
 
 function generateIMAXSeats(rows: number, seatsPerRow: number) {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -11,14 +15,20 @@ function generateIMAXSeats(rows: number, seatsPerRow: number) {
 
     for (let j = 1; j <= seatsPerRow; j++) {
       const seatId = `${row}${j}`;
-      seatMap[row].push({ id: seatId, selected: false, price: 550 });
+
+      seatMap[row].push({
+        id: seatId,
+        selected: false,
+        price: 550,
+        hidden: removedSeats.indexOf(seatId) != -1,
+      });
     }
   }
 
   return seatMap;
 }
 
-const seats = generateIMAXSeats(14, 17 + 25 + 17);
+const seats = generateIMAXSeats(13, 6 + 14 + 5);
 
 type SeatsProps = {
   email: string;
@@ -67,7 +77,6 @@ export default function IMAXSeats(props: SeatsProps) {
           {Object.entries(seats).map(([row, seats]) => (
             <div className="c-row">
               {seats.map((seat) => {
-                console.log(selectedSeats);
                 return (
                   <div
                     onClick={() => handleSeatToggle(seat.id, seat.price)}
@@ -77,7 +86,7 @@ export default function IMAXSeats(props: SeatsProps) {
                         : (selectedSeats.indexOf(seat.id) > -1
                           ? " occupied glow-green"
                           : "")
-                    }`}
+                    }${seat.hidden ? " invisible" : ""}`}
                   >
                   </div>
                 );
@@ -93,9 +102,12 @@ export default function IMAXSeats(props: SeatsProps) {
             Available Seats: {availableSeatsCount} /{" "}
             {Object.values(seats).flat().length}
           </p>
+          <p className="text-lg">
+            Price: {price} Rs. + 15 Rs. (Rayzorpay cut)
+          </p>
         </div>
         <button className="bg-blue-400 float-right p-2 rounded-sm">
-          Checkout {price} Rs.
+          Checkout {price + 15} Rs.
         </button>
       </div>
     </div>

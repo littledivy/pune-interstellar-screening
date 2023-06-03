@@ -80,11 +80,11 @@ body {
   background-color: #fff;
 }
 
-.seat:nth-of-type(16) {
+.seat:nth-of-type(6) {
   margin-right: 18px;
 }
 
-.seat:nth-last-of-type(16) {
+.seat:nth-last-of-type(5) {
   margin-left: 18px;
 }
 
