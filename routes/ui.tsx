@@ -3,6 +3,6 @@ import IMAXSeats from "../islands/Seats.tsx";
 
 export default function Booking(props: PageProps) {
   // Seat selection
-  return <IMAXSeats />
+  return <IMAXSeats />;
   // Payout
 }

@@ -13,7 +13,12 @@ export async function handler(req: Request) {
     return new Response("Unauthorised", { status: 400 });
   }
 
-  const accessToken = await getAccessToken(web.client_id, web.client_secret, web.redirect_uris[0], code);
+  const accessToken = await getAccessToken(
+    web.client_id,
+    web.client_secret,
+    web.redirect_uris[0],
+    code,
+  );
   const profileInfo = await getProfileInfo(accessToken);
 
   const response = await ctx.render({
@@ -28,7 +33,5 @@ export async function handler(req: Request) {
 }
 
 export default function Booking(props: PageProps) {
-  // Seat selection
-  return <IMAXSeats />
-  // Payout
+  return <IMAXSeats />;
 }

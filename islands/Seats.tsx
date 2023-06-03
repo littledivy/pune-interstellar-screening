@@ -1,68 +1,88 @@
 import { useState } from "preact/hooks";
 import { Button } from "../components/Button.tsx";
 
-interface SeatsProps {
-}
-
 function generateIMAXSeats(rows: number, seatsPerRow: number) {
-  const seats = [];
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const seatMap = {};
 
   for (let i = 0; i < rows; i++) {
+    const row = alphabet[i];
+    seatMap[row] = [];
+
     for (let j = 1; j <= seatsPerRow; j++) {
-      const seatId = `${alphabet[i]}${j}`;
-      seats.push({ id: seatId, selected: false });
+      const seatId = `${row}${j}`;
+      seatMap[row].push({ id: seatId, selected: false, price: 550 });
     }
   }
 
-  return seats;
+  return seatMap;
 }
 
-const seats = generateIMAXSeats(10, 10);
-
-function getSeatStatus() {
-  return seats.map((seat) => ({
-    ...seat,
-    status: seat.selected ? "selected" : "available",
-  }));
-}
-
-function toggleSeatStatus(seatId: string) {
-  const seat = seats.find((s) => s.id === seatId);
-  if (seat) {
-    seat.selected = !seat.selected;
-    return true;
-  }
-  return false;
-}
+const seats = generateIMAXSeats(14, 17 + 25 + 17);
 
 export default function IMAXSeats(props: SeatsProps) {
-  const seatStatus = getSeatStatus();
+  const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
+  const [price, setPrice] = useState<number>(0);
+
+  const availableSeatsCount = Object.values(seats)
+    .flat()
+    .filter((seat) => !seat.selected).length;
+
+  const handleSeatToggle = (seatId: string, p: number) => {
+    const index = selectedSeats.indexOf(seatId);
+    if (index > -1) {
+      const updatedSeats = [...selectedSeats];
+      updatedSeats.splice(index, 1);
+      setSelectedSeats(updatedSeats);
+    } else {
+      setSelectedSeats([...selectedSeats, seatId]);
+    }
+
+    setPrice(price + p);
+  };
 
   return (
-    <div class="mb-30">
-      <div class="h-70 ml-15 -rotate-45"></div>
-
-      <h1 className="text-2xl font-bold mb-4">IMAX Seat Selection</h1>
-        <div className="space-x-4">
-          {seatStatus.map((seat) => (
-            <button
-              key={seat.id}
-              onClick={() => toggleSeatStatus(seat.id)}
-              className={`
-                px-4 py-2 border ${
-                  seat.selected
-                    ? "bg-green-500 text-white"
-                    : "bg-gray-100 text-gray-900"
-                }
-              `}
-              disabled={seat.selected}
-            >
-              {seat.id}
-            </button>
+    <div>
+      <h1 className="text-2xl font-bold mb-4">r/Pune IMAX Seat Selection</h1>
+      <div className="container items-center">
+        <div className="screen"></div>
+      </div>
+      <div>
+        <div className="container items-start pb-12">
+          {Object.entries(seats).map(([row, seats]) => (
+            <div className="c-row">
+              {seats.map((seat) => {
+                console.log(selectedSeats);
+                return (
+                  <div
+                    onClick={() => handleSeatToggle(seat.id, seat.price)}
+                    className={`seat${
+                      seat.selected
+                        ? " occupied"
+                        : (selectedSeats.indexOf(seat.id) > -1
+                          ? " occupied glow-green"
+                          : "")
+                    }`}
+                  >
+                  </div>
+                );
+              })}
+            </div>
           ))}
         </div>
-
+        <div className="container">
+          <p className="text-lg">
+            Selected Seats: {selectedSeats.join(", ")}
+          </p>
+          <p className="text-lg">
+            Available Seats: {availableSeatsCount} /{" "}
+            {Object.values(seats).flat().length}
+          </p>
+        </div>
+        <button className="bg-blue-400 float-right p-2 rounded-sm">
+          Checkout {price} Rs.
+        </button>
+      </div>
     </div>
   );
 }
