@@ -19,7 +19,7 @@ export async function handler(req: Request, ctx) {
   const accessToken = await getAccessToken(
     web.client_id,
     web.client_secret,
-    web.redirect_uris[0],
+    Deno.env.get("GOOGLE_REDIRECT_URL") || web.redirect_uris[0],
     code,
   );
   const profileInfo = await getProfileInfo(accessToken);
