@@ -5,23 +5,29 @@
 import config from "./deno.json" assert { type: "json" };
 import * as $0 from "./routes/api/live-seats.ts";
 import * as $1 from "./routes/api/order.ts";
-import * as $2 from "./routes/index.tsx";
-import * as $3 from "./routes/oauth.tsx";
-import * as $4 from "./routes/success.tsx";
-import * as $5 from "./routes/ui.tsx";
-import * as $$0 from "./islands/Seats.tsx";
+import * as $2 from "./routes/api/scan.ts";
+import * as $3 from "./routes/index.tsx";
+import * as $4 from "./routes/oauth.tsx";
+import * as $5 from "./routes/scan.tsx";
+import * as $6 from "./routes/success.tsx";
+import * as $7 from "./routes/ui.tsx";
+import * as $$0 from "./islands/QRScanner.tsx";
+import * as $$1 from "./islands/Seats.tsx";
 
 const manifest = {
   routes: {
     "./routes/api/live-seats.ts": $0,
     "./routes/api/order.ts": $1,
-    "./routes/index.tsx": $2,
-    "./routes/oauth.tsx": $3,
-    "./routes/success.tsx": $4,
-    "./routes/ui.tsx": $5,
+    "./routes/api/scan.ts": $2,
+    "./routes/index.tsx": $3,
+    "./routes/oauth.tsx": $4,
+    "./routes/scan.tsx": $5,
+    "./routes/success.tsx": $6,
+    "./routes/ui.tsx": $7,
   },
   islands: {
-    "./islands/Seats.tsx": $$0,
+    "./islands/QRScanner.tsx": $$0,
+    "./islands/Seats.tsx": $$1,
   },
   baseUrl: import.meta.url,
   config,

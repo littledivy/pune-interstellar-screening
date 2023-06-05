@@ -1,6 +1,19 @@
 import { qrcode } from "https://deno.land/x/qrcode/mod.ts";
+import { createHmac } from "node:crypto";
 
 const kv = await Deno.openKv();
+
+const HMAC_SECRET = Deno.env.get("HMAC_SECRET");
+if (!HMAC_SECRET) throw new Error("HMAC_SECRET not set");
+
+function hmacSha256(data: string): string {
+  return data + "|" + createHmac("sha256", HMAC_SECRET).update(data).digest("hex");
+}
+
+export function verifyHmac(data: string): boolean {
+  const [payload, hash] = data.split("|");
+  return hmacSha256(payload) === data;
+}
 
 function seatsAvailable(seats: string[]) {
   const key = ["seats", "interstellar"];
@@ -16,8 +29,6 @@ function seatsAvailable(seats: string[]) {
       const s = row.filter((seat) => seats.indexOf(seat.id) != -1);
       if (s) selected.push(...s);
     });
-
-    console.log(selected);
 
     if (selected.length != seats.length) {
       return false;
@@ -70,7 +81,7 @@ export async function handler(req: Request, ctx) {
       status: 400,
     });
   }
-  const qrCode = await qrcode(seats.join(" ") || "error", { size: 100 });
+  const qrCode = await qrcode(hmacSha256(seats.join(" ")) || "error", { size: 100 });
   return ctx.render({ seats, qrCode });
 }
 

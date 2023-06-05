@@ -60,13 +60,13 @@ export default function IMAXSeats(props: SeatsProps) {
       theme: {
         color: "#686CFD",
       },
-      config: {
-        display: {
-          hide: [{
-            method: "upi",
-          }],
-        },
-      },
+      // config: {
+      //   display: {
+      //     hide: [{
+      //       method: "upi",
+      //     }],
+      //   },
+      // },
     };
 
     const rzp1 = new window.Razorpay(options);
