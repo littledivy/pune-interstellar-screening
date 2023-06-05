@@ -3,7 +3,7 @@ import { getAccessToken, getProfileInfo } from "../lib/google.js";
 import { getCookies, setCookie } from "$std/http/cookie.ts";
 import IMAXSeats from "../islands/Seats.tsx";
 
-import settings from "../settings.json" assert { type: "json" };
+const settings = JSON.parse(Deno.env.get("SETTINGS"));
 const { web } = settings;
 
 const kv = await Deno.openKv();

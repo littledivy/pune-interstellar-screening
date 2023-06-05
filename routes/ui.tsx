@@ -72,7 +72,6 @@ export default function Booking(props: PageProps) {
   return (
     <IMAXSeats
       seats={seats}
-      {/* TODO */}
       avatar_url={"https://lh3.googleusercontent.com/a/AAcHTtdhFGc4KQwsJC-8kSjnVZ0IRcHpl4uZNcckmKhAKg=s96-c"}
       email={"dj.srivastava23@gmail.com"}
     />

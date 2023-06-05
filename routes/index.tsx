@@ -1,5 +1,5 @@
 import { Head } from "$fresh/runtime.ts";
-import settings from "../settings.json" assert { type: "json" };
+const settings = JSON.parse(Deno.env.get("SETTINGS"));
 
 export async function handler(req: Request) {
   const { web } = settings;
