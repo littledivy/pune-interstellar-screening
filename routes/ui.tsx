@@ -65,6 +65,8 @@ export async function getSeats() {
   return seats;
 }
 
+await getSeats();
+
 export async function handler(req: Request, ctx) {
   return await ctx.render({ seats: await getSeats() });
 }
