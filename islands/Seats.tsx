@@ -43,7 +43,7 @@ export default function IMAXSeats(props: SeatsProps) {
       method: "POST",
       body: JSON.stringify({
         price,
-        seat: selectedSeats[0],
+        seats: selectedSeats,
       }),
     });
 
