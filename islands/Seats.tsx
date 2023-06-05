@@ -39,12 +39,13 @@ export default function IMAXSeats(props: SeatsProps) {
     });
 
     const { id, amount } = await resp.json();
+
     const options = {
       key: "rzp_test_1DP5mmOlF5G5ag",
       amount: amount,
       currency: "INR",
       name: "r/Pune Interstellar",
-      callback_url: "http://localhost:8000/success?order_id=" + id,
+      callback_url: window.location.origin + "/success?order_id=" + id,
       description: "Test Transaction",
       theme: {
         color: "#686CFD",
