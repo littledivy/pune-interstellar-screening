@@ -21,7 +21,7 @@ export default function Home() {
       <Head>
         <title>r/Pune Interstellar Screening</title>
       </Head>
-      <div>
+      <div className="flex flex-col items-center justify-center min-h-screen py-2">
         <h1 className="text-2xl font-bold mb-4">r/Pune IMAX Seat Selection</h1>
         <div class="px-6 sm:px-0 max-w-sm">
           <a

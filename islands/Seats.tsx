@@ -66,7 +66,7 @@ export default function IMAXSeats(props: SeatsProps) {
   };
 
   return (
-    <div>
+    <div className="p-2">
       <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
       <h1 className="text-2xl font-bold mb-4">r/Pune IMAX Seat Selection</h1>
       <div className="float-right flex">
