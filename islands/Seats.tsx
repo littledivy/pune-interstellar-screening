@@ -32,6 +32,7 @@ export default function IMAXSeats(props: SeatsProps) {
       setSelectedSeats(updatedSeats);
 
       setPrice(price - p);
+  
     } else {
       setSelectedSeats([...selectedSeats, seatId]);
       setPrice(price + p);
@@ -61,9 +62,11 @@ export default function IMAXSeats(props: SeatsProps) {
         color: "#686CFD",
       },
       config: {
-        hide: {
-          method: "upi",
-        },
+        display: {
+          hide: {
+            method: "upi",
+          },
+        }
       },
     };
 
