@@ -70,14 +70,14 @@ export async function handler(req: Request, ctx) {
       status: 400,
     });
   }
-  const qrCode = await qrcode(seats.join(" ") || "error", { size: 200 });
+  const qrCode = await qrcode(seats.join(" ") || "error", { size: 100 });
   return ctx.render({ seats, qrCode });
 }
 
 export default function Success(props) {
   return (
-    <div>
-      <img src={props.data.qrCode} className="rounded-sm" />
+    <div className="flex flex-col items-center justify-center h-screen">
+      <img src={props.data.qrCode} />
       <p>{props.data.seats.join(" ")} confirmed! Please take a screenshot</p>
     </div>
   );

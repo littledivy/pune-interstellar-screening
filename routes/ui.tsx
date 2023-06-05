@@ -53,7 +53,7 @@ function generateIMAXSeats(rows: number, seatsPerRow: number) {
   return seatMap;
 }
 
-async function getSeats() {
+export async function getSeats() {
   const key = ["seats", "interstellar"];
   const { value } = await kv.get(key);
   if (value) return value;
