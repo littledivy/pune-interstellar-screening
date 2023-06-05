@@ -13,8 +13,8 @@ function seatsAvailable(seats: string[]) {
     // });
     let selected = [];
     Object.values(value).filter((row) => {
-      const s = row.find((seat) => seats.indexOf(seat.id) != -1);
-      if (s) selected.push(s);
+      const s = row.filter((seat) => seats.indexOf(seat.id) != -1);
+      if (s) selected.push(...s);
     });
 
     console.log(selected);
