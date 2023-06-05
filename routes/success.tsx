@@ -17,6 +17,8 @@ function seatsAvailable(seats: string[]) {
       if (s) selected.push(s);
     });
 
+    console.log(selected);
+
     if (selected.length != seats.length) {
       return false;
     }

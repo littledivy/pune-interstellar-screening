@@ -12,13 +12,13 @@ export default function IMAXSeats(props: SeatsProps) {
   const [price, setPrice] = useState<number>(0);
   const [seats, setSeats] = useState<any>(s);
 
-  useEffect(() => {
-    const events = new EventSource(`/api/live-seats`);
-    events.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      setSeats(data);
-    };
-  });
+  //   useEffect(() => {
+  //     const events = new EventSource(`/api/live-seats`);
+  //     events.onmessage = (event) => {
+  //       const data = JSON.parse(event.data);
+  //       setSeats(data);
+  //     };
+  //   });
 
   const availableSeatsCount = Object.values(seats)
     .flat()

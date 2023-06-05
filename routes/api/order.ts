@@ -25,12 +25,14 @@ function setOrderStatus(orderId: string, status: string, seats: string[]) {
 }
 
 export const handler = async (req: Request, _ctx: HandlerContext): Response => {
+  console.log("order", req.url);
   const { price, seats } = await req.json();
 
   if (!await seatsAvailable(seats)) {
     return new Response("Seat not available", { status: 400 });
   }
 
+  console.log("Placing order for", seats);
   const result = await placeOrder(price);
   await setOrderStatus(result.id, "pending", seats);
   console.log("Order placed", result.id);
