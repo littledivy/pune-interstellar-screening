@@ -56,9 +56,17 @@ export default function IMAXSeats(props: SeatsProps) {
       currency: "INR",
       name: "r/Pune Interstellar",
       callback_url: window.location.origin + "/success?order_id=" + id,
-      description: "Test Transaction",
+      description: "Seats for r/Pune Interstellar Screening",
       theme: {
         color: "#686CFD",
+      },
+      options: {
+        checkout: {
+          netbanking: 0,
+          card: 1,
+          upi: 0,
+          wallet: 1,
+        },
       },
     };
 
