@@ -16,25 +16,32 @@ export async function handler(req: Request, ctx) {
     return new Response("Unauthorised", { status: 400 });
   }
 
-  const accessToken = await getAccessToken(
-    web.client_id,
-    web.client_secret,
-    Deno.env.get("GOOGLE_REDIRECT_URL") || web.redirect_uris[0],
-    code,
-  );
-  const profileInfo = await getProfileInfo(accessToken);
+  try {
+    const accessToken = await getAccessToken(
+      web.client_id,
+      web.client_secret,
+      Deno.env.get("GOOGLE_REDIRECT_URL") || web.redirect_uris[0],
+      code,
+    );
+    const profileInfo = await getProfileInfo(accessToken);
 
-  const response = await ctx.render({
-    profileInfo,
-    seats: await getSeats(),
-  });
-  setCookie(response.headers, {
-    name: "deploy_access_token",
-    value: accessToken,
-    maxAge: 60 * 60 * 24 * 7,
-    httpOnly: true,
-  });
-  return response;
+    const response = await ctx.render({
+      profileInfo,
+      seats: await getSeats(),
+    });
+    setCookie(response.headers, {
+      name: "deploy_access_token",
+      value: accessToken,
+      maxAge: 60 * 60 * 24 * 7,
+      httpOnly: true,
+    });
+    return response;
+  } catch {
+    const homeUrl = new URL(req.url);
+    homeUrl.pathname = "/";
+
+    return Response.redirect(homeUrl, 302);
+  }
 }
 
 export default function Booking({ data }: PageProps) {

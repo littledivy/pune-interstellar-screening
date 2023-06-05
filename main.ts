@@ -28,7 +28,9 @@ body {
     color: #fff;
     margin: 0;
 }
-
+@media (max-width: 576px) {
+  body { display: block; }
+}
 * {
 	font-family: "Montserrat", sans-serif !important;
   box-sizing: border-box;
