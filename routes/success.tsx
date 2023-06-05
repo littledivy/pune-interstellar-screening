@@ -57,13 +57,11 @@ async function updateSeats(seats: string[]) {
 async function completeOrderStatus(orderId: string) {
   const key = ["orders", orderId];
   const { value } = await kv.get(key);
-  console.log(orderId);
-  if (!value.seats) return;
+  if (!value) return "Order not found";
   await kv.delete(key);
 
   if (!await seatsAvailable(value.seats)) {
-    console.log("seats not available");
-    return;
+    return "Seats not available. Your order ID is " + orderId;
   }
 
   await updateSeats(value.seats);
@@ -76,16 +74,18 @@ export async function handler(req: Request, ctx) {
   const orderId = url.searchParams.get("order_id");
   console.log("Success", orderId);
   const seats = await completeOrderStatus(orderId);
-  if (!seats) {
-    return new Response("Seat is already booked. Your order ID is " + orderId, {
-      status: 400,
-    });
+  if (typeof seats == "string") {
+    return ctx.render({ error: seats });
   }
-  const qrCode = await qrcode(hmacSha256(seats.join(" ")) || "error", { size: 100 });
+  const qrCode = await qrcode(hmacSha256(seats.join(" ")) || "error", { size: 200 });
   return ctx.render({ seats, qrCode });
 }
 
 export default function Success(props) {
+  if (props.data.error) {
+    return <h2>{props.data.error}</h2>;
+  }
+
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <img src={props.data.qrCode} />
