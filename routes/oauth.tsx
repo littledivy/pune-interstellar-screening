@@ -6,6 +6,8 @@ import IMAXSeats from "../islands/Seats.tsx";
 import settings from "../settings.json" assert { type: "json" };
 const { web } = settings;
 
+const kv = await Deno.openKv();
+
 export async function handler(req: Request, ctx) {
   const url = new URL(req.url);
   const code = url.searchParams.get("code");

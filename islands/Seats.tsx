@@ -1,47 +1,19 @@
 import { useState } from "preact/hooks";
 
-const removedSeats = [
-  ..."M".repeat(5).split("").map((m, i) => `${m}${i + 1}`),
-  // TODO
-];
-
-function generateIMAXSeats(rows: number, seatsPerRow: number) {
-  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const seatMap = {};
-
-  for (let i = 0; i < rows; i++) {
-    const row = alphabet[i];
-    seatMap[row] = [];
-
-    for (let j = 1; j <= seatsPerRow; j++) {
-      const seatId = `${row}${j}`;
-
-      seatMap[row].push({
-        id: seatId,
-        selected: false,
-        price: 550,
-        hidden: removedSeats.indexOf(seatId) != -1,
-      });
-    }
-  }
-
-  return seatMap;
-}
-
-const seats = generateIMAXSeats(13, 6 + 14 + 5);
-
 type SeatsProps = {
   email: string;
   avatar_url: string;
+  seats: any;
 };
 
 export default function IMAXSeats(props: SeatsProps) {
+  const { seats, email, avatar_url } = props;
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
   const [price, setPrice] = useState<number>(0);
 
   const availableSeatsCount = Object.values(seats)
     .flat()
-    .filter((seat) => !seat.selected).length;
+    .filter((seat) => !seat.selected && !seat.hidden).length;
 
   const handleSeatToggle = (seatId: string, p: number) => {
     const index = selectedSeats.indexOf(seatId);
@@ -49,23 +21,51 @@ export default function IMAXSeats(props: SeatsProps) {
       const updatedSeats = [...selectedSeats];
       updatedSeats.splice(index, 1);
       setSelectedSeats(updatedSeats);
+
+      setPrice(price - p);
     } else {
       setSelectedSeats([...selectedSeats, seatId]);
+      setPrice(price + p);
     }
+  };
 
-    setPrice(price + p);
+  const startCheckout = async () => {
+    const resp = await fetch("/api/order", {
+      method: "POST",
+      body: JSON.stringify({
+        price,
+        seat: selectedSeats[0],
+      }),
+    });
+
+    const { id, amount } = await resp.json();
+    const options = {
+      key: "rzp_test_1DP5mmOlF5G5ag",
+      amount: amount,
+      currency: "INR",
+      name: "r/Pune Interstellar",
+      callback_url: "http://localhost:8000/success?order_id=" + id,
+      description: "Test Transaction",
+      theme: {
+        color: "#686CFD",
+      },
+    };
+
+    const rzp1 = new window.Razorpay(options);
+    rzp1.open();
   };
 
   return (
     <div>
+      <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
       <h1 className="text-2xl font-bold mb-4">r/Pune IMAX Seat Selection</h1>
       <div className="float-right flex">
         <h1 className="mb-4 text-sm p-1 pr-2">
-          Signed in as dj.srivastava23@gmail.com
+          Signed in as {email}
         </h1>
         <img
           className="rounded-full w-8 h-8 mr-2"
-          src={"https://lh3.googleusercontent.com/a/AAcHTtdhFGc4KQwsJC-8kSjnVZ0IRcHpl4uZNcckmKhAKg=s96-c"}
+          src={avatar_url}
         />
       </div>
 
@@ -86,7 +86,7 @@ export default function IMAXSeats(props: SeatsProps) {
                         : (selectedSeats.indexOf(seat.id) > -1
                           ? " occupied glow-green"
                           : "")
-                    }${seat.hidden ? " invisible" : ""}`}
+                    }${seat.hidden ? " reserved" : ""}`}
                   >
                   </div>
                 );
@@ -99,14 +99,16 @@ export default function IMAXSeats(props: SeatsProps) {
             Selected Seats: {selectedSeats.join(", ")}
           </p>
           <p className="text-lg">
-            Available Seats: {availableSeatsCount} /{" "}
-            {Object.values(seats).flat().length}
+            Available Seats: {availableSeatsCount}
           </p>
           <p className="text-lg">
-            Price: {price} Rs. + 15 Rs. (Rayzorpay cut)
+            Price: {price + 15} Rs.
           </p>
         </div>
-        <button className="bg-blue-400 float-right p-2 rounded-sm">
+        <button
+          className="bg-blue-400 float-right p-2 rounded-sm"
+          onClick={() => startCheckout()}
+        >
           Checkout {price + 15} Rs.
         </button>
       </div>

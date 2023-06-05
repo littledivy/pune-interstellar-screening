@@ -80,6 +80,12 @@ body {
   background-color: #fff;
 }
 
+.reserved {
+  /* Fade out the reserved seats */
+  background-color: #444451;
+  opacity: 0.3;
+}
+
 .seat:nth-of-type(6) {
   margin-right: 18px;
 }

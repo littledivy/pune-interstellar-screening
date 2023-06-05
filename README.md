@@ -1,4 +1,4 @@
-## r/Pune Interstellar Screening 
+## r/Pune Interstellar Screening
 
 ### Usage
 
