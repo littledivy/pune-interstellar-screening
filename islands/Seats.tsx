@@ -60,12 +60,9 @@ export default function IMAXSeats(props: SeatsProps) {
       theme: {
         color: "#686CFD",
       },
-      options: {
-        checkout: {
-          netbanking: 0,
-          card: 1,
-          upi: 0,
-          wallet: 1,
+      config: {
+        hide: {
+          method: "upi",
         },
       },
     };
