@@ -7,7 +7,7 @@ google_oauth_url.searchParams.set(
   "scope",
   "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email",
 );
-google_oauth_url.searchParams.set("redirect_uri", web.redirect_uris[0]);
+google_oauth_url.searchParams.set("redirect_uri", Deno.env.get("GOOGLE_REDIRECT_URL") || web.redirect_uris[0]);
 google_oauth_url.searchParams.set("response_type", "code");
 google_oauth_url.searchParams.set("client_id", web.client_id);
 google_oauth_url.searchParams.set("access_type", "online");
