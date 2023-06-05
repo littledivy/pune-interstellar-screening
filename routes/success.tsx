@@ -11,6 +11,9 @@ async function updateSeats(seat: string) {
     s.id === seat ? { ...s, hidden: true } : s
   );
 
+  const channel = new BroadcastChannel("live-seats");
+  channel.postMessage(value);
+
   await kv.set(["seats", "interstellar"], value);
 }
 

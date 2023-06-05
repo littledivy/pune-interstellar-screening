@@ -1,4 +1,4 @@
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 
 type SeatsProps = {
   email: string;
@@ -7,9 +7,18 @@ type SeatsProps = {
 };
 
 export default function IMAXSeats(props: SeatsProps) {
-  const { seats, email, avatar_url } = props;
+  const { seats: s, email, avatar_url } = props;
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
   const [price, setPrice] = useState<number>(0);
+  const [seats, setSeats] = useState<any>(s);
+
+  useEffect(() => {
+    const events = new EventSource(`/api/live-seats`);
+    events.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      setSeats(data);
+    };
+  });
 
   const availableSeatsCount = Object.values(seats)
     .flat()
@@ -80,7 +89,8 @@ export default function IMAXSeats(props: SeatsProps) {
               {seats.map((seat) => {
                 return (
                   <div
-                    onClick={() => handleSeatToggle(seat.id, seat.price)}
+                    onClick={() =>
+                      !seat.hidden && handleSeatToggle(seat.id, seat.price)}
                     className={`seat${
                       seat.selected
                         ? " occupied"
