@@ -27,6 +27,7 @@ export default function QRScanner() {
     });
     scanner.start().then(() => console.log("Camera started"));
   }, []);
+
   return (
     <>
       <video id="preview" style={{ width: "100%" }}></video>

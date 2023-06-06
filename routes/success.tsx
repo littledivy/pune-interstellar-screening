@@ -3,6 +3,7 @@ import { createHmac } from "node:crypto";
 import { sendSimpleMail } from "https://deno.land/x/sendgrid@0.0.3/mod.ts";
 import { getCookies, setCookie } from "$std/http/cookie.ts";
 import { getProfileInfo } from "../lib/google.js";
+import { capturePayment } from "../lib/razorpay.js";
 
 const kv = await Deno.openKv();
 
@@ -38,7 +39,11 @@ function seatsAvailable(seats: string[]) {
       return false;
     }
 
-    return selected.every(({ hidden }) => !hidden);
+    const price = selected.reduce((acc, seat) => acc + seat.price, 0);
+    return {
+      available: selected.every(({ hidden }) => !hidden),
+      price,
+    };
   });
 }
 
@@ -58,16 +63,18 @@ async function updateSeats(seats: string[]) {
   await kv.set(["seats", "interstellar"], value);
 }
 
-async function completeOrderStatus(orderId: string) {
+async function completeOrderStatus(orderId: string, paymentId: string) {
   const key = ["orders", orderId];
   const { value } = await kv.get(key);
   if (!value) return "Order not found";
   await kv.delete(key);
 
-  if (!await seatsAvailable(value.seats)) {
+  const { price, available } = await seatsAvailable(value.seats);
+  if (!available) {
     return "Seats not available. Your order ID is " + orderId;
   }
 
+  await capturePayment(paymentId, price);
   await updateSeats(value.seats);
 
   return value.seats;
@@ -77,10 +84,17 @@ export async function handler(req: Request, ctx) {
   const url = new URL(req.url);
   const orderId = url.searchParams.get("order_id");
 
-  const seats = await completeOrderStatus(orderId);
+  const formData = await req.formData();
+  const paymentId = formData.get("razorpay_payment_id");
+  if (!paymentId) {
+    return new Response("Payment ID not found", { status: 400 });
+  }
+
+  const seats = await completeOrderStatus(orderId, paymentId);
   if (typeof seats == "string") {
     return ctx.render({ error: seats });
   }
+
   const qrCode = await qrcode(hmacSha256(seats.join(" ")) || "error", {
     size: 200,
   });
