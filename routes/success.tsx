@@ -74,8 +74,8 @@ async function completeOrderStatus(orderId: string, paymentId: string) {
     return "Seats not available. Your order ID is " + orderId;
   }
 
-  await capturePayment(paymentId, price);
   await updateSeats(value.seats);
+  await capturePayment(paymentId, price);
 
   return value.seats;
 }
