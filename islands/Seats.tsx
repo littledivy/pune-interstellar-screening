@@ -87,11 +87,8 @@ export default function IMAXSeats(props: SeatsProps) {
         />
       </div>
 
-      <div className="container items-center">
-        <div className="screen"></div>
-      </div>
       <div>
-        <div className="container items-start pb-12">
+        <div className="container items-start pb-4">
           {Object.entries(seats).map(([row, seats]) => (
             <div className="c-row">
               {seats.map((seat) => {
@@ -113,6 +110,13 @@ export default function IMAXSeats(props: SeatsProps) {
             </div>
           ))}
         </div>
+        <div className="container items-center no-margins pb-4">
+          <div className="screen"></div>
+          <p className="text-xs text-gray-400 text-center">
+            All eyes this way please!
+          </p>
+        </div>
+
         <div className="container">
           <p className="text-lg">
             Selected Seats: {selectedSeats.join(", ")}

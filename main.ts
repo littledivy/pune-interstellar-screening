@@ -137,9 +137,12 @@ body {
   background: #fff;
   height: 70px;
   width: 70%;
-  margin: 15px 0;
-  transform: rotateX(-45deg);
+  transform: rotateX(45deg);
   box-shadow: 0 3px 10px rgba(255,255,255,0.7);
+}
+
+.no-margins {
+  margin: 0 !important;
 }
 
 p.text {

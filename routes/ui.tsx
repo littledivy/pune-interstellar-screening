@@ -13,17 +13,13 @@ const removedSeats = [
 
   // M 12 - 24
   ..."M".repeat(13).split("").map((m, i) => `${m}${i + 12}`),
-  // L 20 - 24
-  ..."L".repeat(5).split("").map((m, i) => `${m}${i + 20}`),
+  // L 21 - 24
+  ..."L".repeat(4).split("").map((m, i) => `${m}${i + 21}`),
   // K, J, I, H 21 - 24
-  "K".repeat(4).split("").map((m, i) => `${m}${i + 21}`),
-  "J".repeat(4).split("").map((m, i) => `${m}${i + 21}`),
-  "I".repeat(4).split("").map((m, i) => `${m}${i + 21}`),
-  "H".repeat(4).split("").map((m, i) => `${m}${i + 21}`),
-
-  "J18",
-  "I17",
-  "H15",
+  ..."K".repeat(4).split("").map((m, i) => `${m}${i + 21}`),
+  ..."J".repeat(4).split("").map((m, i) => `${m}${i + 21}`),
+  ..."I".repeat(4).split("").map((m, i) => `${m}${i + 21}`),
+  ..."H".repeat(4).split("").map((m, i) => `${m}${i + 21}`),
 
   // D, C, B, A 21 - 24
   ..."D".repeat(4).split("").map((m, i) => `${m}${i + 21}`),

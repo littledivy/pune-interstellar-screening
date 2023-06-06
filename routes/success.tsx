@@ -100,7 +100,8 @@ export async function handler(req: Request, ctx) {
           type: "text/html",
           value:
             "<h1>r/Pune Interstellar IMAX</h1><p>Thank you for booking seat(s) " +
-            seats.join(" ") + ". Here is your booking QR.</p>",
+            seats.join(" ") +
+            ". Here is your booking QR. Do not share this with anyone.</p><br><p>Join this new WhatsApp group for further updates: <a href='https://chat.whatsapp.com/C0tAGHQtI2k93R3LiiwUJN'>https://chat.whatsapp.com/C0tAGHQtI2k93R3LiiwUJN</a></p>",
         },
       ],
       attachments: [
