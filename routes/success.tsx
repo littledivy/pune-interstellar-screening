@@ -67,8 +67,7 @@ async function completeOrderStatus(orderId: string, paymentId: string) {
   const key = ["orders", orderId];
   const { value } = await kv.get(key);
   if (!value) return "Order not found";
-  await kv.delete(key);
-
+  if (value.status === "paid") return "Order already paid";
   const { price, available } = await seatsAvailable(value.seats);
 
   if (!available) {
@@ -80,10 +79,12 @@ async function completeOrderStatus(orderId: string, paymentId: string) {
     // }
     // return "Seats not available. Refund initiated, refund ID is " + res.id + ". Your order ID is " + orderId;
 
+    await kv.set(key, { ...value, payment_id: paymentId, status: "refund" });
     return "Seats not available. Refund is initiated and will be processed in ~5 business days. Your order ID is " +
       orderId;
   }
 
+  await kv.set(key, { ...value, payment_id: paymentId, status: "paid" });
   await updateSeats(value.seats);
 
   return value.seats;
