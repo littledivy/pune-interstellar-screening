@@ -52,11 +52,12 @@ export default function IMAXSeats(props: SeatsProps) {
     const options = {
       // key: "rzp_test_1DP5mmOlF5G5ag",
       key: "rzp_live_jhu9tVSOEIAFCm",
+      // key: "rzp_test_FeMtDa1NH5upg3",
       amount: amount,
       currency: "INR",
-      name: "r/Pune Interstellar",
+      name: "r/Pune Interstellar Screening",
       callback_url: window.location.origin + "/success?order_id=" + id,
-      description: "Seats for r/Pune Interstellar Screening",
+      description: "Workshop screening",
       theme: {
         color: "#686CFD",
       },

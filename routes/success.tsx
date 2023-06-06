@@ -3,7 +3,7 @@ import { createHmac } from "node:crypto";
 import { sendSimpleMail } from "https://deno.land/x/sendgrid@0.0.3/mod.ts";
 import { getCookies, setCookie } from "$std/http/cookie.ts";
 import { getProfileInfo } from "../lib/google.js";
-import { capturePayment } from "../lib/razorpay.js";
+import { capturePayment, instantRefund } from "../lib/razorpay.js";
 
 const kv = await Deno.openKv();
 
@@ -70,12 +70,21 @@ async function completeOrderStatus(orderId: string, paymentId: string) {
   await kv.delete(key);
 
   const { price, available } = await seatsAvailable(value.seats);
+
   if (!available) {
-    return "Seats not available. Your order ID is " + orderId;
+    // Instant-refund
+    // const res = await instantRefund(paymentId, price);
+    // if (res.error) {
+    //   console.error("Instant Refund failed", res.error);
+    //   return "Seats not available. Refund is initiated and will be processed in ~5 business days. Your order ID is " + orderId;
+    // }
+    // return "Seats not available. Refund initiated, refund ID is " + res.id + ". Your order ID is " + orderId;
+
+    return "Seats not available. Refund is initiated and will be processed in ~5 business days. Your order ID is " +
+      orderId;
   }
 
   await updateSeats(value.seats);
-  await capturePayment(paymentId, price);
 
   return value.seats;
 }
@@ -144,7 +153,11 @@ export async function handler(req: Request, ctx) {
 
 export default function Success(props) {
   if (props.data.error) {
-    return <h2>{props.data.error}</h2>;
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <p>{props.data.error}</p>
+      </div>
+    );
   }
 
   return (

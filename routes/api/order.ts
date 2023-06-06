@@ -34,6 +34,7 @@ export const handler = async (req: Request, _ctx: HandlerContext): Response => {
 
   console.log("Placing order for", seats);
   const result = await placeOrder(price);
+  console.log("Order placed", result);
   await setOrderStatus(result.id, "pending", seats);
   console.log("Order placed", result.id);
 
