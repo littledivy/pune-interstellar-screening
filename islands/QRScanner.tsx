@@ -7,7 +7,8 @@ export default function QRScanner() {
         type="module"
         dangerouslySetInnerHTML={{
           __html: `
-        import QrScanner from "https://cdn.skypack.dev/qr-scanner";
+        // import QrScanner from "https://cdn.skypack.dev/qr-scanner";
+          import QrScanner from "https://raw.githubusercontent.com/nimiq/qr-scanner/master/qr-scanner.min.js";
         const video = document.getElementById("preview");
         const scanner = new QrScanner(video, async (scan) => {
           const result = await fetch("/api/scan", {
