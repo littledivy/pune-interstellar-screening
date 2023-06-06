@@ -50,8 +50,8 @@ export default function IMAXSeats(props: SeatsProps) {
     const { id, amount } = await resp.json();
 
     const options = {
-      key: "rzp_test_1DP5mmOlF5G5ag",
-      // key: "rzp_live_jhu9tVSOEIAFCm",
+      // key: "rzp_test_1DP5mmOlF5G5ag",
+      key: "rzp_live_jhu9tVSOEIAFCm",
       amount: amount,
       currency: "INR",
       name: "r/Pune Interstellar",
