@@ -3,8 +3,10 @@ export default function QRScanner() {
     <div className="h-screen">
       <video id="preview" style={{ width: "100%" }}></video>
       <p id="result" className="p-4"></p>
-      <script type="module" dangerouslySetInnerHTML={{
-        __html: `
+      <script
+        type="module"
+        dangerouslySetInnerHTML={{
+          __html: `
         import QrScanner from "https://cdn.skypack.dev/qr-scanner";
         QrScanner.WORKER_PATH = "https://cdn.skypack.dev/qr-scanner/qr-scanner-worker.min.js";
         const video = document.getElementById("preview");
@@ -25,8 +27,9 @@ export default function QRScanner() {
         }, {
           highlightScanRegion: true,
         });
-        scanner.start()`
-      }} />
+        scanner.start()`,
+        }}
+      />
     </div>
   );
 }

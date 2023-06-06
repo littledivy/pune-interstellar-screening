@@ -1,5 +1,8 @@
 import { qrcode } from "https://deno.land/x/qrcode/mod.ts";
 import { createHmac } from "node:crypto";
+import { sendSimpleMail } from "https://deno.land/x/sendgrid@0.0.3/mod.ts";
+import { getCookies, setCookie } from "$std/http/cookie.ts";
+import { getProfileInfo } from "../lib/google.js";
 
 const kv = await Deno.openKv();
 
@@ -7,7 +10,8 @@ const HMAC_SECRET = Deno.env.get("HMAC_SECRET");
 if (!HMAC_SECRET) throw new Error("HMAC_SECRET not set");
 
 function hmacSha256(data: string): string {
-  return data + "|" + createHmac("sha256", HMAC_SECRET).update(data).digest("hex");
+  return data + "|" +
+    createHmac("sha256", HMAC_SECRET).update(data).digest("hex");
 }
 
 export function verifyHmac(data: string): boolean {
@@ -72,13 +76,55 @@ async function completeOrderStatus(orderId: string) {
 export async function handler(req: Request, ctx) {
   const url = new URL(req.url);
   const orderId = url.searchParams.get("order_id");
-  console.log("Success", orderId);
+
   const seats = await completeOrderStatus(orderId);
   if (typeof seats == "string") {
     return ctx.render({ error: seats });
   }
-  const qrCode = await qrcode(hmacSha256(seats.join(" ")) || "error", { size: 200 });
-  return ctx.render({ seats, qrCode });
+  const qrCode = await qrcode(hmacSha256(seats.join(" ")) || "error", {
+    size: 200,
+  });
+
+  let email;
+  let profileInfo;
+  try {
+    const accessToken = getCookies(req.headers)["deploy_access_token"];
+    profileInfo = await getProfileInfo(accessToken);
+
+    email = await sendSimpleMail({
+      to: [{ email: profileInfo.email }],
+      from: { email: "dj.srivastava23@gmail.com" },
+      subject: "Your Interstellar IMAX ticket",
+      content: [
+        {
+          type: "text/html",
+          value:
+            "<h1>r/Pune Interstellar IMAX</h1><p>Thank you for booking seat(s) " +
+            seats.join(" ") + ". Here is your booking QR.</p>",
+        },
+      ],
+      attachments: [
+        {
+          content: qrCode.split(",")[1],
+          filename: "ticket_qr.gif",
+          type: "image/gif",
+          disposition: "inline",
+          content_id: "ticket_qr",
+        },
+      ],
+    }, {
+      apiKey: Deno.env.get("SENDGRID_API_KEY"),
+    });
+  } catch (e) {
+    console.error(e);
+  }
+
+  return ctx.render({
+    seats,
+    qrCode,
+    emailSent: !!email?.success,
+    email: profileInfo?.email,
+  });
 }
 
 export default function Success(props) {
@@ -88,8 +134,9 @@ export default function Success(props) {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <img src={props.data.qrCode} />
+      <img src={props.data.qrCode} className="p-4" />
       <p>{props.data.seats.join(" ")} confirmed! Please take a screenshot</p>
+      {props.data.emailSent && <p>Email sent to {props.data.email}</p>}
     </div>
   );
 }
