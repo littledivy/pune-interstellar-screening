@@ -8,7 +8,6 @@ export default function QRScanner() {
         dangerouslySetInnerHTML={{
           __html: `
         import QrScanner from "https://cdn.skypack.dev/qr-scanner";
-        QrScanner.WORKER_PATH = "https://cdn.skypack.dev/qr-scanner/qr-scanner-worker.min.js";
         const video = document.getElementById("preview");
         const scanner = new QrScanner(video, async (scan) => {
           const result = await fetch("/api/scan", {
@@ -26,6 +25,7 @@ export default function QRScanner() {
           }
         }, {
           highlightScanRegion: true,
+          highlightCodeOutline: true,
         });
         scanner.start()`,
         }}
