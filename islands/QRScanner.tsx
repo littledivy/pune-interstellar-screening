@@ -27,7 +27,7 @@ export default function QRScanner() {
           highlightScanRegion: true,
           highlightCodeOutline: true,
         });
-        scanner.start()`,
+        scanner.start().then(() => alert("Camera started"))`,
         }}
       />
     </div>
