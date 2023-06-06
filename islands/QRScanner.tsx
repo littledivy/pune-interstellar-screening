@@ -1,14 +1,13 @@
 export default function QRScanner() {
   return (
-    <div className="h-screen">
+    <>
       <video id="preview" style={{ width: "100%" }}></video>
       <p id="result" className="p-4"></p>
       <script
         type="module"
         dangerouslySetInnerHTML={{
           __html: `
-        // import QrScanner from "https://cdn.skypack.dev/qr-scanner";
-          import QrScanner from "https://raw.githubusercontent.com/nimiq/qr-scanner/master/qr-scanner.min.js";
+        import QrScanner from "https://cdn.skypack.dev/qr-scanner";
         const video = document.getElementById("preview");
         const scanner = new QrScanner(video, async (scan) => {
           const result = await fetch("/api/scan", {
@@ -31,6 +30,6 @@ export default function QRScanner() {
         scanner.start().then(() => alert("Camera started"))`,
         }}
       />
-    </div>
+    </>
   );
 }
