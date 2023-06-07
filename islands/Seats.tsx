@@ -47,7 +47,12 @@ export default function IMAXSeats(props: SeatsProps) {
       }),
     });
 
-    const { id, amount } = await resp.json();
+    const { id, amount, error } = await resp.json();
+
+    if (error) {
+      alert(error);
+      return;
+    }
 
     const options = {
       key: "rzp_test_1DP5mmOlF5G5ag",
@@ -60,6 +65,18 @@ export default function IMAXSeats(props: SeatsProps) {
       description: "Workshop screening",
       theme: {
         color: "#686CFD",
+      },
+      timeout: 5 * 60,
+      "modal": {
+        "ondismiss": function () {
+          console.log("Checkout form closed");
+          fetch("/api/unlock_seat", {
+            method: "POST",
+            body: JSON.stringify({
+              id,
+            }),
+          });
+        },
       },
       // config: {
       //   display: {

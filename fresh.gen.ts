@@ -8,11 +8,12 @@ import * as $1 from "./routes/admin.tsx";
 import * as $2 from "./routes/api/live-seats.ts";
 import * as $3 from "./routes/api/order.ts";
 import * as $4 from "./routes/api/scan.ts";
-import * as $5 from "./routes/index.tsx";
-import * as $6 from "./routes/oauth.tsx";
-import * as $7 from "./routes/scan.tsx";
-import * as $8 from "./routes/success.tsx";
-import * as $9 from "./routes/ui.tsx";
+import * as $5 from "./routes/api/unlock_seat.ts";
+import * as $6 from "./routes/index.tsx";
+import * as $7 from "./routes/oauth.tsx";
+import * as $8 from "./routes/scan.tsx";
+import * as $9 from "./routes/success.tsx";
+import * as $10 from "./routes/ui.tsx";
 import * as $$0 from "./islands/QRScanner.tsx";
 import * as $$1 from "./islands/Seats.tsx";
 
@@ -23,11 +24,12 @@ const manifest = {
     "./routes/api/live-seats.ts": $2,
     "./routes/api/order.ts": $3,
     "./routes/api/scan.ts": $4,
-    "./routes/index.tsx": $5,
-    "./routes/oauth.tsx": $6,
-    "./routes/scan.tsx": $7,
-    "./routes/success.tsx": $8,
-    "./routes/ui.tsx": $9,
+    "./routes/api/unlock_seat.ts": $5,
+    "./routes/index.tsx": $6,
+    "./routes/oauth.tsx": $7,
+    "./routes/scan.tsx": $8,
+    "./routes/success.tsx": $9,
+    "./routes/ui.tsx": $10,
   },
   islands: {
     "./islands/QRScanner.tsx": $$0,
