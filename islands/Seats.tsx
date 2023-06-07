@@ -55,8 +55,8 @@ export default function IMAXSeats(props: SeatsProps) {
     }
 
     const options = {
-      key: "rzp_test_1DP5mmOlF5G5ag",
-      // key: "rzp_live_jhu9tVSOEIAFCm",
+      // key: "rzp_test_1DP5mmOlF5G5ag",
+      key: "rzp_live_jhu9tVSOEIAFCm",
       // key: "rzp_test_FeMtDa1NH5upg3",
       amount: amount,
       currency: "INR",
@@ -143,14 +143,14 @@ export default function IMAXSeats(props: SeatsProps) {
             Available Seats: {availableSeatsCount}
           </p>
           <p className="text-lg">
-            Price: {price + 15} Rs.
+            Price: {price} Rs.
           </p>
         </div>
         <button
           className="bg-blue-400 float-right p-2 rounded-sm"
           onClick={() => startCheckout()}
         >
-          Checkout {price + 15} Rs.
+          Checkout {price} Rs.
         </button>
       </div>
     </div>

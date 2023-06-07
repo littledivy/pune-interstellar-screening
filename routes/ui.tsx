@@ -4,7 +4,7 @@ import IMAXSeats from "../islands/Seats.tsx";
 export const kv = await Deno.openKv();
 await kv.delete(["seats", "interstellar"]);
 
-const PRICE_PER_SEAT = 5;
+const PRICE_PER_SEAT = 1;
 
 const removedSeats = [
   // All of O and N
