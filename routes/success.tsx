@@ -85,6 +85,7 @@ async function completeOrderStatus(orderId: string, paymentId: string) {
   }
 
   await kv.set(key, { ...value, payment_id: paymentId, status: "paid" });
+  await capturePayment(paymentId, price);
   await updateSeats(value.seats);
 
   return value.seats;

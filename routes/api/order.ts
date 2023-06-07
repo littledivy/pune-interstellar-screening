@@ -3,7 +3,7 @@ import { placeOrder } from "../../lib/razorpay.js";
 
 const kv = await Deno.openKv();
 
-const SEAT_HOLD_TIME = 1 * 60 * 1000;
+const SEAT_HOLD_TIME = 5 * 60 * 1000;
 
 function seatsAvailable(seats: string[]) {
   const key = ["seats", "interstellar"];
