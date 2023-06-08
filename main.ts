@@ -31,6 +31,24 @@ body {
 @media (max-width: 576px) {
   body { display: block; }
 }
+@media (min-width: 576px) {
+::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+}
+::-webkit-scrollbar
+{
+	width: 6px;
+}
+::-webkit-scrollbar-thumb
+{
+	border-radius: 5px;
+  background-color: #555;
+}
+
+}
+
 * {
 	font-family: "Montserrat", sans-serif !important;
   box-sizing: border-box;
@@ -43,7 +61,14 @@ body {
   align-items: center;
   flex-direction: column
 }
-
+.fixed-div {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  color: white;
+  text-align: center;
+}
 .movie-container select {
   appearance: none;
   -moz-appearance: none;
@@ -57,7 +82,6 @@ body {
 
 .container {
   perspective: 1000px;
-  margin: 40px 0;
   display: flex;
   flex-direction: column;
   overflow-x: auto;
@@ -67,11 +91,16 @@ body {
 
 .seat {
   background-color: #444451;
-  height: 12px;
-  width: 15px;
+  height: 27px;
+  width: 30px;
   margin: 3px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  border-radius: 5px;
+  text-align: center;
+  justify-content: center;
+  font-size: 15px;
+  line-height: 27px;
+  font-weight: bold;
+  scrollbar-width: none;
 }
 
 .selected {
@@ -80,6 +109,7 @@ body {
 
 .occupied {
   background-color: #fff;
+  color: #000;
 }
 
 .reserved {

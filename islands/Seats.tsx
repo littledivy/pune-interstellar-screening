@@ -94,19 +94,23 @@ export default function IMAXSeats(props: SeatsProps) {
   return (
     <div className="p-2">
       <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-      <h1 className="text-2xl font-bold mb-4">r/Pune IMAX Seat Selection</h1>
-      <div className="float-right flex">
-        <h1 className="mb-4 text-sm p-1 pr-2">
-          Signed in as {email}
-        </h1>
-        <img
-          className="rounded-full w-8 h-8 mr-2"
-          src={avatar_url}
-        />
-      </div>
-
       <div>
-        <div className="container items-start pb-4">
+        <div className="container items-start pt-4">
+          <h1 className="text-2xl font-bold mb-2">
+            r/Pune IMAX Seat Selection
+          </h1>
+          <div className="float-right flex">
+            <h1 className="mb-4 text-sm p-1 pr-2">
+              Signed in as {email}
+            </h1>
+            <img
+              className="rounded-full w-8 h-8 mr-2"
+              src={avatar_url}
+            />
+          </div>
+        </div>
+
+        <div className="container items-start py-4">
           {Object.entries(seats).map(([row, seats]) => (
             <div className="c-row">
               {seats.map((seat) => {
@@ -122,6 +126,7 @@ export default function IMAXSeats(props: SeatsProps) {
                           : "")
                     }${seat.hidden ? " reserved" : ""}`}
                   >
+                    {seat.id.slice(1)}
                   </div>
                 );
               })}
@@ -135,23 +140,14 @@ export default function IMAXSeats(props: SeatsProps) {
           </p>
         </div>
 
-        <div className="container">
-          <p className="text-lg">
-            Selected Seats: {selectedSeats.join(", ")}
-          </p>
-          <p className="text-lg">
-            Available Seats: {availableSeatsCount}
-          </p>
-          <p className="text-lg">
-            Price: {price} Rs.
-          </p>
+        <div className="fixed-div bg-blue-600  rounded drop-shadow-lg">
+          <button
+            className="w-full p-4 rounded-sm bg-opacity-20 backdrop-blur-lg rounded drop-shadow-lg"
+            onClick={() => startCheckout()}
+          >
+            Checkout {price} Rs.
+          </button>
         </div>
-        <button
-          className="bg-blue-400 float-right p-2 rounded-sm"
-          onClick={() => startCheckout()}
-        >
-          Checkout {price} Rs.
-        </button>
       </div>
     </div>
   );
