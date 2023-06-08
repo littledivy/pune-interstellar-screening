@@ -25,10 +25,11 @@ function seatsAvailable(seats: string[]) {
     }
 
     const price = selected.reduce((acc, seat) => acc + seat.price, 0);
+
     return {
       available: selected.every(({ hidden }) => !hidden),
       // If timestamp is less than 5 minutes before Date.now() then it is on hold
-      onHold: selected.every((s) =>
+      onHold: selected.find((s) =>
         s.timestamp ? s.timestamp > Date.now() - SEAT_HOLD_TIME : false
       ),
       price,
@@ -51,9 +52,13 @@ async function lockSeats(seats: string[], order_id: string) {
       //
       // 2. If seat selected, and we know that it is not already locked.
       // We can lock it.
-      if (s.timestamp && s.timestamp > Date.now() - SEAT_HOLD_TIME) {
-        console.log("Seat expired", s);
+      if (s.timestamp && s.timestamp < Date.now() - SEAT_HOLD_TIME) {
+        console.log("Seat expired", s, Date.now());
         s.timestamp = undefined;
+      }
+
+      if (s.id == seat) {
+        console.log("Locking seat", s, Date.now());
       }
 
       return s.id === seat ? { ...s, timestamp: Date.now(), order_id } : s;
