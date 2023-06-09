@@ -11,6 +11,7 @@ export default function IMAXSeats(props: SeatsProps) {
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
   const [price, setPrice] = useState<number>(0);
   const [seats, setSeats] = useState<any>(s);
+  const [showTCModal, setShowTCModal] = useState<boolean>(true);
 
   //   useEffect(() => {
   //     const events = new EventSource(`/api/live-seats`);
@@ -93,6 +94,81 @@ export default function IMAXSeats(props: SeatsProps) {
 
   return (
     <div className="p-2">
+      <div
+        className={`relative z-10${showTCModal ? "" : "hidden"}`}
+        aria-labelledby="modal-title"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div
+          class={showTCModal
+            ? `fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity`
+            : ""}
+        >
+        </div>
+        <div
+          class={`fixed inset-0 z-10 overflow-y-auto ${
+            showTCModal ? "" : "hidden"
+          }`}
+        >
+          <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+            <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+              <div class="bg-white px-4 pb-4 p-6">
+                <div class="sm:flex sm:items-start">
+                  <div class="mt-2 sm:ml-4 sm:text-left">
+                    <h3
+                      class="text-base font-semibold leading-6 text-gray-900"
+                      id="modal-title"
+                    >
+                      General T&C:
+                    </h3>
+                    <div class="mt-2">
+                      <ul class="list-disc">
+                        <li className="text-base text-gray-500 p-2">
+                          Tickets once confirmed cannot be refunded.
+                        </li>
+                        <li className="text-base text-gray-500 p-2">
+                          Be respectful and courteous to everyone in the
+                          theatre.
+                        </li>
+                        <li className="text-base text-gray-500 p-2">
+                          We aren't responsible for some glitch or technical
+                          issue with the payment or otherwise.
+                        </li>
+                        <li className="text-base text-gray-500 p-2">
+                          Organizers are not responsible for any kind of loss
+                          arising from the event. Participate at your own risk.
+                        </li>
+                        <li className="text-base text-gray-500 p-2">
+                          The organizers reserve the right to refuse entry to
+                          any person for any/no reason.
+                        </li>
+                        <li className="text-base text-gray-500 p-2">
+                          This service is provided as-is, without any warranty.
+                        </li>
+                        <li className="text-base text-gray-500 p-2">
+                          By participating in the event, you agree to abide by
+                          the above rules and take full responsibility for your
+                          actions.
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <button
+                  type="button"
+                  class="inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm sm:ml-3 sm:w-auto bg-gray"
+                  onClick={() => setShowTCModal(false)}
+                >
+                  I understand
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
       <div>
         <div className="container items-start pt-4">

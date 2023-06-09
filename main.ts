@@ -61,6 +61,7 @@ body {
   align-items: center;
   flex-direction: column
 }
+
 .fixed-div {
   position: fixed;
   left: 0;
@@ -69,6 +70,12 @@ body {
   color: white;
   text-align: center;
 }
+
+.bg-gray {
+  background-color: #444451;
+  color: #fff;
+}
+
 .movie-container select {
   appearance: none;
   -moz-appearance: none;
