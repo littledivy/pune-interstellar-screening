@@ -106,6 +106,7 @@ export default function IMAXSeats(props: SeatsProps) {
             <img
               className="rounded-full w-8 h-8 mr-2"
               src={avatar_url}
+              alt="User profile picture"
             />
           </div>
         </div>

@@ -115,7 +115,7 @@ body {
 .reserved {
   /* Fade out the reserved seats */
   background-color: #444451;
-  opacity: 0.3;
+  opacity: 0.38;
 }
 
 .seat:nth-of-type(6) {
