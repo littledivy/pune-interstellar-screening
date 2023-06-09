@@ -168,9 +168,55 @@ export default function Success(props) {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <img src={props.data.qrCode} className="p-4" />
-      <p>{props.data.seats.join(" ")} confirmed! Please take a screenshot</p>
-      {props.data.emailSent && <p>Email sent to {props.data.email}</p>}
+      <div class="ticket-system text-gray-700">
+        <div class="top">
+          <div class="printer" />
+        </div>
+        <div class="receipts-wrapper">
+          <div class="receipts">
+            <div class="receipt">
+              <div class="details">
+                <div class="item">
+                  <span>Screening</span>
+                  <h3>Interstellar</h3>
+                </div>
+                <div class="item">
+                  <span>Screen</span>
+                  <h3>AUDIO0</h3>
+                </div>
+                <div class="item">
+                  <span>Date</span>
+                  <h3>26/06/2023 12:00</h3>
+                </div>
+                <div class="item">
+                  <span>Gate Closes</span>
+                  <h3>12:30</h3>
+                </div>
+                <div class="item">
+                  <span>Venue</span>
+                  <h3>Cinepolis Westend Mall, Aundh</h3>
+                </div>
+                <div class="item">
+                  <span>Seat</span>
+                  <h3>{props.data.seats.join(" ")}</h3>
+                </div>
+              </div>
+            </div>
+            <div class="receipt qr-code">
+              <img src={props.data.qrCode} className="qr" />
+              <div class="description">
+                {props.data.emailSent && <p>{props.data.email}</p>}
+
+                <p className="pt-2">Show QR-code when requested</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p>
+        {props.data.emailSent && "Email Sent."} Please{" "}
+        {props.data.emailSent && "also"} take a screenshot.
+      </p>
     </div>
   );
 }
