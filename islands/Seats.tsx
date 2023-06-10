@@ -79,13 +79,13 @@ export default function IMAXSeats(props: SeatsProps) {
           });
         },
       },
-      // config: {
-      //   display: {
-      //     hide: [{
-      //       method: "upi",
-      //     }],
-      //   },
-      // },
+      config: {
+        display: {
+          hide: [{
+            method: "upi",
+          }],
+        },
+      },
     };
 
     const rzp1 = new window.Razorpay(options);

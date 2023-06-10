@@ -2,9 +2,9 @@ import { PageProps } from "$fresh/server.ts";
 import IMAXSeats from "../islands/Seats.tsx";
 
 export const kv = await Deno.openKv();
-await kv.delete(["seats", "interstellar"]);
 
-const PRICE_PER_SEAT = 1;
+// Price of seat + Razorpay fee + Domain and Sendgrid fee.
+const PRICE_PER_SEAT = 550 + 11 + 9;
 
 const removedSeats = [
   // All of O and N

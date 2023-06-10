@@ -243,18 +243,18 @@ export default function Success(props) {
                 </div>
                 <div class="item">
                   <span>Date</span>
-                  <h3>26/06/2023 12:00</h3>
+                  <h3>25/06/2023 12:30</h3>
                 </div>
                 <div class="item">
                   <span>Gate Closes</span>
-                  <h3>12:30</h3>
+                  <h3>12:00</h3>
                 </div>
                 <div class="item">
                   <span>Venue</span>
-                  <h3>Cinepolis Westend Mall, Aundh</h3>
+                  <h3>Cinepolis: Nexus WESTEND Mall, Aundh</h3>
                 </div>
                 <div class="item">
-                  <span>Seat</span>
+                  <span>Seats</span>
                   <h3>{props.data.seats.join(" ")}</h3>
                 </div>
               </div>
