@@ -4,13 +4,9 @@ import IMAXSeats from "../islands/Seats.tsx";
 export const kv = await Deno.openKv();
 
 // Price of seat + Razorpay fee + Domain and Sendgrid fee.
-const PRICE_PER_SEAT = 550 + 11 + 9;
+const PRICE_PER_SEAT = 550 + 25;
 
 const removedSeats = [
-  // All of O and N
-  ..."N".repeat(24).split("").map((m, i) => `${m}${i + 1}`),
-  ..."O".repeat(24).split("").map((m, i) => `${m}${i + 1}`),
-
   // M 12 - 24
   ..."M".repeat(13).split("").map((m, i) => `${m}${i + 12}`),
   // L 21 - 24
