@@ -56,8 +56,8 @@ export default function IMAXSeats(props: SeatsProps) {
     }
 
     const options = {
-      // key: "rzp_test_1DP5mmOlF5G5ag",
-      key: "rzp_live_jhu9tVSOEIAFCm",
+      key: "rzp_test_1DP5mmOlF5G5ag",
+      // key: "rzp_live_jhu9tVSOEIAFCm",
       // key: "rzp_test_FeMtDa1NH5upg3",
       amount: amount,
       currency: "INR",
@@ -190,6 +190,7 @@ export default function IMAXSeats(props: SeatsProps) {
         <div className="container items-start py-4">
           {Object.entries(seats).map(([row, seats]) => (
             <div className="c-row">
+              <div className="c-row-label">{row}</div>
               {seats.map((seat) => {
                 return (
                   <div

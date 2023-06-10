@@ -170,6 +170,15 @@ body {
   justify-content: center;
 }
 
+.c-row-label {
+  height: 27px;
+  width: 30px;
+  text-align: center;
+  justify-content: center;
+  font-size: 12px;
+  line-height: 27px;
+}
+
 .screen {
   background: #fff;
   height: 70px;
