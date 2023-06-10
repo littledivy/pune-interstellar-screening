@@ -40,6 +40,11 @@ export default function IMAXSeats(props: SeatsProps) {
   };
 
   const startCheckout = async () => {
+    if (selectedSeats.length > 4) {
+      alert("You can only select up to 4 seats");
+      return;
+    }
+
     const resp = await fetch("/api/order", {
       method: "POST",
       body: JSON.stringify({

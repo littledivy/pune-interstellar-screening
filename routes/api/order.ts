@@ -4,6 +4,7 @@ import { placeOrder } from "../../lib/razorpay.js";
 const kv = await Deno.openKv();
 
 const SEAT_HOLD_TIME = 5 * 60 * 1000;
+const SEAT_LIMIT = 4;
 
 function seatsAvailable(seats: string[]) {
   const key = ["seats", "interstellar"];
@@ -77,6 +78,10 @@ function setOrderStatus(orderId: string, status: string, seats: string[]) {
 export const handler = async (req: Request, _ctx: HandlerContext): Response => {
   console.log("order", req.url);
   const { price, seats } = await req.json();
+
+  if (seats.length > SEAT_LIMIT) {
+    return new Response("Too many seats selected", { status: 400 });
+  }
 
   const { available, onHold, price: expectedPrice } = await seatsAvailable(
     seats,
