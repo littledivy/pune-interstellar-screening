@@ -45,7 +45,7 @@ export const handler = async (req: Request, ctx): Response => {
       return `${order.email || "-"},${order.status},${seats},${order.payment_id || "-"}`;
     }).join("\n");
 
-    return new Response(`email,status,seats\n${csv}`, {
+    return new Response(`email,status,seats,payment_id\n${csv}`, {
       headers: {
         "Content-Type": "text/csv",
         "Content-Disposition": "attachment; filename=orders.csv",
