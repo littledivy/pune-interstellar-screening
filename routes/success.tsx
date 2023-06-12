@@ -241,7 +241,7 @@ export default function Success(props) {
                 </div>
                 <div class="item">
                   <span>Gate Closes</span>
-                  <h3>12:15</h3>
+                  <h3>12:30</h3>
                 </div>
                 <div class="item">
                   <span>Venue</span>
