@@ -233,7 +233,7 @@ export default function Success(props) {
                 </div>
                 <div class="item">
                   <span>Screen</span>
-                  <h3>AUDIO0</h3>
+                  <h3>AUDI04</h3>
                 </div>
                 <div class="item">
                   <span>Date</span>
@@ -241,7 +241,7 @@ export default function Success(props) {
                 </div>
                 <div class="item">
                   <span>Gate Closes</span>
-                  <h3>12:00</h3>
+                  <h3>12:15</h3>
                 </div>
                 <div class="item">
                   <span>Venue</span>
