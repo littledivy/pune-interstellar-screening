@@ -43,8 +43,7 @@ export const handler = async (req: Request, ctx): Response => {
     const csv = orders.map(({ value: order }) => {
       const seats = order.seats.join(" ");
       return `${order.email || "-"},${order.status},${seats}`;
-    }
-    ).join("\n");
+    }).join("\n");
 
     return new Response(`email,status,seats\n${csv}`, {
       headers: {
@@ -53,7 +52,6 @@ export const handler = async (req: Request, ctx): Response => {
       },
     });
   }
-
 
   return new Response("Unknown action", { status: 400 });
 };
@@ -80,7 +78,9 @@ export default function Admin({ data }) {
                 <td className="border border-slate-600 p-1">{order_id}</td>
                 <td className="border border-slate-600 p-1">{email ?? "-"}</td>
                 <td className="border border-slate-600 p-1">{status}</td>
-                <td className="border border-slate-600 p-1">{seats.join(", ")}</td>
+                <td className="border border-slate-600 p-1">
+                  {seats.join(", ")}
+                </td>
               </tr>
             );
           })}

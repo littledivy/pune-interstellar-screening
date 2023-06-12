@@ -102,7 +102,7 @@ export default function IMAXSeats(props: SeatsProps) {
     rzp1.open();
   };
 
-  const gapAbove = ["M", "J", "B"]
+  const gapAbove = ["M", "J", "B"];
 
   return (
     <div className="p-2">
@@ -220,7 +220,6 @@ export default function IMAXSeats(props: SeatsProps) {
                   </div>
                 );
               })}
-
             </div>
           ))}
         </div>

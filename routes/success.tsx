@@ -63,7 +63,11 @@ async function updateSeats(seats: string[]) {
   await kv.set(["seats", "interstellar"], value);
 }
 
-async function completeOrderStatus(orderId: string, paymentId: string, email?: string) {
+async function completeOrderStatus(
+  orderId: string,
+  paymentId: string,
+  email?: string,
+) {
   const key = ["orders", orderId];
   const { value } = await kv.get(key);
   if (!value) return "Order not found";
@@ -79,7 +83,12 @@ async function completeOrderStatus(orderId: string, paymentId: string, email?: s
     // }
     // return "Seats not available. Refund initiated, refund ID is " + res.id + ". Your order ID is " + orderId;
 
-    await kv.set(key, { ...value, payment_id: paymentId, status: "refund", email });
+    await kv.set(key, {
+      ...value,
+      payment_id: paymentId,
+      status: "refund",
+      email,
+    });
     return "Seats not available. Refund is initiated and will be processed in ~5 business days. Your order ID is " +
       orderId;
   }
@@ -115,7 +124,11 @@ export async function handler(req: Request, ctx) {
     return new Response("Payment ID not found", { status: 400 });
   }
 
-  const seats = await completeOrderStatus(orderId, paymentId, profileInfo.email);
+  const seats = await completeOrderStatus(
+    orderId,
+    paymentId,
+    profileInfo.email,
+  );
   if (typeof seats == "string") {
     return ctx.render({ error: seats });
   }
@@ -131,9 +144,9 @@ export async function handler(req: Request, ctx) {
       To: profileInfo.email,
       Subject: "Your Interstellar IMAX ticket",
       HtmlBody:
-            "<h1>r/Pune Interstellar IMAX</h1><p>Thank you for booking seat(s) " +
-            seats.join(" ") +
-            ". Here is your booking QR. Do not share this with anyone.</p><br><p>Join this new WhatsApp group for further updates: <a href='https://chat.whatsapp.com/C0tAGHQtI2k93R3LiiwUJN'>https://chat.whatsapp.com/C0tAGHQtI2k93R3LiiwUJN</a></p>",
+        "<h1>r/Pune Interstellar IMAX</h1><p>Thank you for booking seat(s) " +
+        seats.join(" ") +
+        ". Here is your booking QR. Do not share this with anyone.</p><br><p>Join this new WhatsApp group for further updates: <a href='https://chat.whatsapp.com/C0tAGHQtI2k93R3LiiwUJN'>https://chat.whatsapp.com/C0tAGHQtI2k93R3LiiwUJN</a></p>",
       Attachments: [
         {
           Content: qrCode.split(",")[1],
@@ -144,7 +157,7 @@ export async function handler(req: Request, ctx) {
       ],
     });
 
-    console.log(email)
+    console.log(email);
   } catch (e) {
     console.error(e);
   }
