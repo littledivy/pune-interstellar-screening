@@ -63,7 +63,7 @@ async function updateSeats(seats: string[]) {
   await kv.set(["seats", "interstellar"], value);
 }
 
-async function completeOrderStatus(orderId: string, paymentId: string) {
+async function completeOrderStatus(orderId: string, paymentId: string, email?: string) {
   const key = ["orders", orderId];
   const { value } = await kv.get(key);
   if (!value) return "Order not found";
@@ -79,12 +79,12 @@ async function completeOrderStatus(orderId: string, paymentId: string) {
     // }
     // return "Seats not available. Refund initiated, refund ID is " + res.id + ". Your order ID is " + orderId;
 
-    await kv.set(key, { ...value, payment_id: paymentId, status: "refund" });
+    await kv.set(key, { ...value, payment_id: paymentId, status: "refund", email });
     return "Seats not available. Refund is initiated and will be processed in ~5 business days. Your order ID is " +
       orderId;
   }
 
-  await kv.set(key, { ...value, payment_id: paymentId, status: "paid" });
+  await kv.set(key, { ...value, payment_id: paymentId, status: "paid", email });
   try {
     console.log(await capturePayment(paymentId, price));
   } catch (e) {
@@ -100,9 +100,13 @@ export async function handler(req: Request, ctx) {
   const orderId = url.searchParams.get("order_id");
 
   let paymentId;
+  let profileInfo;
   try {
     const formData = await req.formData();
     paymentId = formData.get("razorpay_payment_id");
+
+    const accessToken = getCookies(req.headers)["deploy_access_token"];
+    profileInfo = await getProfileInfo(accessToken);
   } catch (_) {
     return ctx.render({ error: "Invalid request" });
   }
@@ -111,7 +115,7 @@ export async function handler(req: Request, ctx) {
     return new Response("Payment ID not found", { status: 400 });
   }
 
-  const seats = await completeOrderStatus(orderId, paymentId);
+  const seats = await completeOrderStatus(orderId, paymentId, profileInfo.email);
   if (typeof seats == "string") {
     return ctx.render({ error: seats });
   }
@@ -121,11 +125,7 @@ export async function handler(req: Request, ctx) {
   });
 
   let email;
-  let profileInfo;
   try {
-    const accessToken = getCookies(req.headers)["deploy_access_token"];
-    profileInfo = await getProfileInfo(accessToken);
-
     email = await sendSimpleMail({
       to: profileInfo.email,
       subject: "Your Interstellar IMAX ticket",
