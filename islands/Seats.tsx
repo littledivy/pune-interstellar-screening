@@ -34,6 +34,11 @@ export default function IMAXSeats(props: SeatsProps) {
 
       setPrice(price - p);
     } else {
+      if (selectedSeats.length + 1 > 4) {
+        alert("You can only select up to 4 seats");
+        return;
+      }
+
       setSelectedSeats([...selectedSeats, seatId]);
       setPrice(price + p);
     }
