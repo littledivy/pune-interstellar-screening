@@ -64,7 +64,14 @@ export async function getSeats() {
 
 await getSeats();
 
+const disabled = Deno.env.get("DISABLED") === "true";
 export async function handler(req: Request, ctx) {
+  if (disabled) {
+    return new Response("Ticket sales are closed.", {
+      status: 400,
+    });
+  }
+
   return await ctx.render({ seats: await getSeats() });
 }
 

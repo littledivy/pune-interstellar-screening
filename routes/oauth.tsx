@@ -9,7 +9,14 @@ const { web } = settings;
 
 const kv = await Deno.openKv();
 
+const disabled = Deno.env.get("DISABLED") === "true";
 export async function handler(req: Request, ctx) {
+  if (disabled) {
+    return new Response("Ticket sales are closed.", {
+      status: 400,
+    });
+  }
+
   const url = new URL(req.url);
   const code = url.searchParams.get("code");
   if (!code) {
