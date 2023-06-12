@@ -42,7 +42,7 @@ export const handler = async (req: Request, ctx): Response => {
 
     const csv = orders.map(({ value: order }) => {
       const seats = order.seats.join(" ");
-      return `${order.email || "-"},${order.status},${seats}`;
+      return `${order.email || "-"},${order.status},${seats},${order.payment_id || "-"}`;
     }).join("\n");
 
     return new Response(`email,status,seats\n${csv}`, {
