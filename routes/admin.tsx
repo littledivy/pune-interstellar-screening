@@ -19,7 +19,7 @@ export const handler = async (req: Request, ctx): Response => {
     return new Response("Deleted orders and seats");
   }
 
-  if (action === "export_pending_orders") {
+  if (action === "show_all_orders") {
     const entries = await kv.list({ prefix: ["orders"] });
     const orders = [];
     for await (const entry of entries) {
@@ -29,39 +29,58 @@ export const handler = async (req: Request, ctx): Response => {
     return ctx.render({ orders });
   }
 
+  if (action === "export_orders") {
+    // Export to CSV
+    const entries = await kv.list({ prefix: ["orders"] });
+    const orders = [];
+    for await (const entry of entries) {
+      const order = await kv.get(entry.key);
+      if (order.value.status !== "pending") {
+        orders.push(order);
+      }
+    }
+
+    const csv = orders.map(({ value: order }) => {
+      const seats = order.seats.join(" ");
+      return `${order.email || "-"},${order.status},${seats}`;
+    }
+    ).join("\n");
+
+    return new Response(`email,status,seats\n${csv}`, {
+      headers: {
+        "Content-Type": "text/csv",
+        "Content-Disposition": "attachment; filename=orders.csv",
+      },
+    });
+  }
+
+
   return new Response("Unknown action", { status: 400 });
 };
 
 export default function Admin({ data }) {
-  const htmlTable = data.orders.map((order) => {
-    const { key, value } = order;
-    const [_, order_id] = key;
-    const { status, seats } = value;
-    return `<tr><td>${order_id}</td><td>${status}</td><td>${
-      seats.join(", ")
-    }</td></tr>`;
-  }).join("\n");
-
   return (
     <div>
       <table className="table-auto border-collapse border border-slate-500">
         <thead>
           <tr>
-            <th className="border border-slate-600">Order ID</th>
-            <th className="border border-slate-600">Status</th>
-            <th className="border border-slate-600">Seats</th>
+            <th className="border border-slate-400 p-1">Order ID</th>
+            <th className="border border-slate-400 p-1">Email</th>
+            <th className="border border-slate-400 p-1">Status</th>
+            <th className="border border-slate-400 p-1">Seats</th>
           </tr>
         </thead>
         <tbody>
           {data.orders.map((order) => {
             const { key, value } = order;
             const [_, order_id] = key;
-            const { status, seats } = value;
+            const { status, seats, email } = value;
             return (
               <tr>
-                <td className="border border-slate-600">{order_id}</td>
-                <td className="border border-slate-600">{status}</td>
-                <td className="border border-slate-600">{seats.join(", ")}</td>
+                <td className="border border-slate-600 p-1">{order_id}</td>
+                <td className="border border-slate-600 p-1">{email ?? "-"}</td>
+                <td className="border border-slate-600 p-1">{status}</td>
+                <td className="border border-slate-600 p-1">{seats.join(", ")}</td>
               </tr>
             );
           })}
