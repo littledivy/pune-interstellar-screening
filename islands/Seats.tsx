@@ -97,6 +97,8 @@ export default function IMAXSeats(props: SeatsProps) {
     rzp1.open();
   };
 
+  const gapAbove = ["M", "J", "B"]
+
   return (
     <div className="p-2">
       <div
@@ -194,7 +196,7 @@ export default function IMAXSeats(props: SeatsProps) {
 
         <div className="container items-start py-4">
           {Object.entries(seats).map(([row, seats]) => (
-            <div className="c-row">
+            <div className={`c-row ${gapAbove.includes(row) ? "mt-4" : ""}`}>
               <div className="c-row-label">{row}</div>
               {seats.map((seat) => {
                 return (
@@ -213,6 +215,7 @@ export default function IMAXSeats(props: SeatsProps) {
                   </div>
                 );
               })}
+
             </div>
           ))}
         </div>
