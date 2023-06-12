@@ -104,7 +104,12 @@ async function completeOrderStatus(
   return value.seats;
 }
 
+const disabled = Deno.env.get("DISABLED") === "true";
 export async function handler(req: Request, ctx) {
+  if (disabled) {
+    return new Response("Booking is disabled!", { status: 503 });
+  }
+
   const url = new URL(req.url);
   const orderId = url.searchParams.get("order_id");
 
