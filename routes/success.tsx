@@ -127,17 +127,19 @@ export async function handler(req: Request, ctx) {
   let email;
   try {
     email = await sendSimpleMail({
-      to: profileInfo.email,
-      subject: "Your Interstellar IMAX ticket",
-      html:
+      From: "admin@ticketmagic.fun",
+      To: profileInfo.email,
+      Subject: "Your Interstellar IMAX ticket",
+      HtmlBody:
             "<h1>r/Pune Interstellar IMAX</h1><p>Thank you for booking seat(s) " +
             seats.join(" ") +
             ". Here is your booking QR. Do not share this with anyone.</p><br><p>Join this new WhatsApp group for further updates: <a href='https://chat.whatsapp.com/C0tAGHQtI2k93R3LiiwUJN'>https://chat.whatsapp.com/C0tAGHQtI2k93R3LiiwUJN</a></p>",
-      attachments: [
+      Attachments: [
         {
-          content: qrCode,
-          filename: "ticket_qr.gif",
-          contentDisposition: "inline",
+          Content: qrCode.split(",")[1],
+          Name: "ticket_qr.gif",
+          ContentType: "image/gif",
+          ContentDisposition: "inline",
         },
       ],
     });
@@ -150,7 +152,7 @@ export async function handler(req: Request, ctx) {
   return ctx.render({
     seats,
     qrCode,
-    emailSent: email?.message == "Email sent",
+    emailSent: email?.ErrorCode === 0,
     email: profileInfo?.email,
   });
 }
