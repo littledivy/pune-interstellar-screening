@@ -1,6 +1,6 @@
 import { qrcode } from "https://deno.land/x/qrcode/mod.ts";
 import { createHmac } from "node:crypto";
-import { sendSimpleMail } from "https://deno.land/x/sendgrid@0.0.3/mod.ts";
+import { sendSimpleMail } from "../lib/smtp.js";
 import { getCookies, setCookie } from "$std/http/cookie.ts";
 import { getProfileInfo } from "../lib/google.js";
 import { capturePayment, instantRefund } from "../lib/razorpay.js";
@@ -127,30 +127,22 @@ export async function handler(req: Request, ctx) {
     profileInfo = await getProfileInfo(accessToken);
 
     email = await sendSimpleMail({
-      to: [{ email: profileInfo.email }],
-      from: { email: "dj.srivastava23@gmail.com" },
+      to: profileInfo.email,
       subject: "Your Interstellar IMAX ticket",
-      content: [
-        {
-          type: "text/html",
-          value:
+      html:
             "<h1>r/Pune Interstellar IMAX</h1><p>Thank you for booking seat(s) " +
             seats.join(" ") +
             ". Here is your booking QR. Do not share this with anyone.</p><br><p>Join this new WhatsApp group for further updates: <a href='https://chat.whatsapp.com/C0tAGHQtI2k93R3LiiwUJN'>https://chat.whatsapp.com/C0tAGHQtI2k93R3LiiwUJN</a></p>",
-        },
-      ],
       attachments: [
         {
-          content: qrCode.split(",")[1],
+          content: qrCode,
           filename: "ticket_qr.gif",
-          type: "image/gif",
-          disposition: "inline",
-          content_id: "ticket_qr",
+          contentDisposition: "inline",
         },
       ],
-    }, {
-      apiKey: Deno.env.get("SENDGRID_API_KEY"),
     });
+
+    console.log(email)
   } catch (e) {
     console.error(e);
   }
@@ -158,7 +150,7 @@ export async function handler(req: Request, ctx) {
   return ctx.render({
     seats,
     qrCode,
-    emailSent: !!email?.success,
+    emailSent: email?.message == "Email sent",
     email: profileInfo?.email,
   });
 }
