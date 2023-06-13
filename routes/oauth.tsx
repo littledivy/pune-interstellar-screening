@@ -2,7 +2,7 @@ import { PageProps } from "$fresh/server.ts";
 import { getAccessToken, getProfileInfo } from "../lib/google.js";
 import { getCookies, setCookie } from "$std/http/cookie.ts";
 import IMAXSeats from "../islands/Seats.tsx";
-import { getSeats } from "./ui.tsx";
+import { getSeats } from "../lib/postgres.js";
 
 const settings = JSON.parse(Deno.env.get("SETTINGS"));
 const { web } = settings;

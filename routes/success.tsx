@@ -4,6 +4,7 @@ import { sendSimpleMail } from "../lib/smtp.js";
 import { getCookies, setCookie } from "$std/http/cookie.ts";
 import { getProfileInfo } from "../lib/google.js";
 import { capturePayment, instantRefund } from "../lib/razorpay.js";
+import { connection } from "../lib/postgres.js";
 
 const kv = await Deno.openKv();
 
@@ -20,47 +21,32 @@ export function verifyHmac(data: string): boolean {
   return hmacSha256(payload) === data;
 }
 
-function seatsAvailable(seats: string[]) {
-  const key = ["seats", "interstellar"];
-  return kv.get(key).then(({ value }) => {
-    // Object.values(value).find((row, { id, hidden }) => {
-    //   if (id == seat && !hidden) {
-    //     return true;
-    //   }
-    //   return false;
-    // });
-    let selected = [];
-    Object.values(value).filter((row) => {
-      const s = row.filter((seat) => seats.indexOf(seat.id) != -1);
-      if (s) selected.push(...s);
-    });
+async function seatsAvailable(seats: string[]) {
+  const result = await connection.queryObject`
+    SELECT * FROM seats
+      WHERE id = ANY (${seats})
+      AND NOT hidden
+  `;
 
-    if (selected.length != seats.length) {
-      return false;
-    }
+  const selected = result.rows;
+  if (selected.length !== seats.length) return false;
+  
+  const price = selected.reduce((acc, seat) => acc + seat.price, 0);
 
-    const price = selected.reduce((acc, seat) => acc + seat.price, 0);
     return {
       available: selected.every(({ hidden }) => !hidden),
       price,
     };
-  });
 }
 
 async function updateSeats(seats: string[]) {
-  const { value } = await kv.get(["seats", "interstellar"]);
-  if (!value) return;
-
-  for (const seat of seats) {
-    const row = seat[0];
-    value[row] = value[row].map((s) =>
-      s.id === seat ? { ...s, hidden: true } : s
-    );
-  }
-  const channel = new BroadcastChannel("live-seats");
-  channel.postMessage(value);
-
-  await kv.set(["seats", "interstellar"], value);
+  const result = await connection.queryObject`
+    UPDATE seats
+      SET hidden = true
+      WHERE id = ANY (${seats})
+      AND NOT hidden
+      `;
+  console.log(result);
 }
 
 async function completeOrderStatus(
