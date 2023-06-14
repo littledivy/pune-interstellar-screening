@@ -5,3 +5,4 @@
 .env.production.local
 .env.local
 settings.json
+gen_qr.js

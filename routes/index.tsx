@@ -23,13 +23,26 @@ export default function Home() {
       <Head>
         <title>r/Pune Interstellar Screening</title>
       </Head>
+            <ul class="circles">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+            </ul>
+
       <div className="flex flex-col items-center justify-center min-h-screen py-2">
         <h1 className="text-2xl font-bold mb-4">r/Pune IMAX Seat Selection</h1>
         <div class="px-6 sm:px-0 max-w-sm">
           {disabled ? <p>Booking not open.</p> : (
             <a
               type="button"
-              class="text-white w-full  bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between dark:focus:ring-[#4285F4]/55 mr-2 mb-2"
+              class="text-white w-full  bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between dark:focus:ring-[#4285F4]/55 mr-2 mb-2 c-button"
               href={google_oauth_url}
             >
               <svg
